@@ -46,7 +46,6 @@
 		201D902824B3976400936170 = {
 			isa = PBXGroup;
 			children = (
-				2077481D24C0C861006AF64E /* NewPlaceViewController.swift */,
 				201D903324B3976400936170 /* MyPlaces */,
 				201D903224B3976400936170 /* Products */,
 			);
@@ -63,6 +62,7 @@
 		201D903324B3976400936170 /* MyPlaces */ = {
 			isa = PBXGroup;
 			children = (
+				2077481D24C0C861006AF64E /* NewPlaceViewController.swift */,
 				201D903424B3976400936170 /* AppDelegate.swift */,
 				201D904824B39DF300936170 /* MainViewController.swift */,
 				2098E08224B4F5DC0005AF79 /* CustomTableViewCell.swift */,
