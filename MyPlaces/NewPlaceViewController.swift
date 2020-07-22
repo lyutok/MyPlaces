@@ -10,6 +10,7 @@ import UIKit
 
 class NewPlaceViewController: UITableViewController {
     
+    var currentPlace: Place?
     var newPlace =  Place()
     var imageIsChanged = false
     
@@ -26,6 +27,8 @@ class NewPlaceViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         saveButton.isEnabled = false
         placeName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        
+        setupEditScreen()
     }
     
     
@@ -47,14 +50,14 @@ class NewPlaceViewController: UITableViewController {
             
             camera.setValue(cameraIcon, forKey: "image")
             camera.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
-                
+            
             let photo = UIAlertAction(title: "Photo", style: .default) { _ in
                 self.chooseImagePicker(source: .photoLibrary)
-                }
+            }
             
             photo.setValue(photoIcon, forKey: "image")
             photo.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
-                
+            
             let cancel = UIAlertAction(title: "Cance", style: .cancel)
             
             actionSheet.addAction(camera)
@@ -68,8 +71,8 @@ class NewPlaceViewController: UITableViewController {
         }
     }
     
-    func saveNewPlace() {
-    
+    func savePlace() {
+        
         var image: UIImage?
         
         if imageIsChanged {
@@ -77,7 +80,7 @@ class NewPlaceViewController: UITableViewController {
         } else {
             image = #imageLiteral(resourceName: "imagePlaceholder")
         }
-
+        
         let imageData = image?.pngData()
         
         let newPlace = Place(name: placeName.text!,
@@ -85,15 +88,53 @@ class NewPlaceViewController: UITableViewController {
                              type: placeType.text,
                              imageData: imageData)
         
-        StorageManager.saveObject(newPlace)
+        if currentPlace != nil {
+            try! realm.write {
+                currentPlace?.name = newPlace.name
+                currentPlace?.location = newPlace.location
+                currentPlace?.type = newPlace.type
+                currentPlace?.imageData = newPlace.imageData
+                
+            }
+        } else {
+            StorageManager.saveObject(newPlace)
+        }
+}
+
+private func setupEditScreen() {
+    if currentPlace != nil {
+        setupNavigationBar()
+        imageIsChanged = true
+        
+        guard let data = currentPlace?.imageData, let image = UIImage(data: data) else { return }
+        
+        placeImage.image = image
+        placeImage.contentMode = .scaleAspectFill
+        placeName.text = currentPlace?.name
+        placeLocation.text = currentPlace?.location
+        placeType.text = currentPlace?.type
+        
+        
     }
     
-    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
-   
-        dismiss(animated: true)
+}
+
+private func setupNavigationBar() {
+    if let topItem = navigationController?.navigationBar.topItem {
+        topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
+    navigationItem.leftBarButtonItem = nil
+    title = currentPlace?.name
+    saveButton.isEnabled = true
+}
+
+@IBAction func cancelButton(_ sender: UIBarButtonItem) {
     
+    dismiss(animated: true)
+}
+
+
 }
 
 // MARK: Text field delegate
@@ -140,6 +181,6 @@ extension NewPlaceViewController: UIImagePickerControllerDelegate, UINavigationC
         imageIsChanged = true
         
         dismiss(animated: true)
-    
+        
     }
 }
