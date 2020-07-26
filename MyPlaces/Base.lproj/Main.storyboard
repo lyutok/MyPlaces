@@ -156,8 +156,8 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="8aE-4H-adT" firstAttribute="centerX" secondItem="HLh-tX-d1S" secondAttribute="centerX" id="HpI-PP-4TV"/>
-                                                <constraint firstItem="8aE-4H-adT" firstAttribute="centerY" secondItem="HLh-tX-d1S" secondAttribute="centerY" id="ImJ-uu-Bqj"/>
+                                                <constraint firstItem="8aE-4H-adT" firstAttribute="centerY" secondItem="HLh-tX-d1S" secondAttribute="centerY" id="44a-Wp-Y52"/>
+                                                <constraint firstItem="8aE-4H-adT" firstAttribute="centerX" secondItem="HLh-tX-d1S" secondAttribute="centerX" id="e3f-9N-HvQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
